@@ -1,0 +1,142 @@
+/* Reset some default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #e0eafc, #cfdef3);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+nav {
+    background-color: #3498db;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    letter-spacing: 1px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Search Section */
+.search-section {
+    margin: 40px auto 20px auto;
+    text-align: center;
+}
+
+.search-section input {
+    padding: 10px 20px;
+    width: 250px;
+    border: 2px solid #3498db;
+    border-radius: 30px;
+    outline: none;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.search-section input:focus {
+    border-color: #2ecc71;
+}
+
+.search-section button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-section button:hover {
+    background-color: #27ae60;
+}
+
+/* Main Content Area */
+main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 40px;
+}
+
+/* Card Styling */
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+}
+
+/* Flag image */
+.card img {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 10px auto;
+    display: block;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Card title */
+.card h3 {
+    margin-top: 15px;
+    font-size: 20px;
+    color: #333;
+}
+
+/* Details and weather section */
+.details, .weather {
+    display: none;
+    margin-top: 15px;
+    text-align: left;
+    font-size: 15px;
+    color: #555;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+/* Buttons inside card */
+.card button {
+    margin-top: 10px;
+    margin-right: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    background-color: #3498db;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.card button:hover {
+    background-color: #2980b9;
+}
+
+/* Footer */
+footer {
+    background-color: #3498db;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
