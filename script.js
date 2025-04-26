@@ -1,23 +1,25 @@
 function fetchCountryData() {
-    var search = document.getElementById("countrySearch").value.trim();
-
-    var url = `https://restcountries.com/v3.1/name/${search}`;
+    var countryName = document.getElementById("countrySearch").value;
+    var url = `https://restcountries.com/v3.1/name/${countryName}`;
 
     fetch(url)
-    .then(function(res) {
-        return res.json();
+    .then(function(response) {
+        return response.json();
     })
     .then(function(data) {
         displayCountries(data);
+    })
+    .catch(function(error) {
+        console.log("Error:", error);
     });
 }
 
-function displayCountries(data) {
-    var mainContent = document.getElementById("mainContent");
-    mainContent.innerHTML = "";
+function displayCountries(countries) {
+    var main = document.getElementById("mainContent");
+    main.innerHTML = "";
 
-    for (var i = 0; i < data.length; i++) {
-        var country = data[i];
+    for (var i = 0; i < countries.length; i++) {
+        var country = countries[i];
 
         var card = document.createElement("div");
         card.classList.add("card");
@@ -25,55 +27,47 @@ function displayCountries(data) {
         card.innerHTML = `
             <img src="${country.flags.svg}" alt="Flag">
             <h3>${country.name.common}</h3>
-
-            <div class="details">
-                <p><strong>Capital:</strong> ${country.capital}</p>
-                <p><strong>Region:</strong> ${country.region}</p>
-                <p><strong>Population:</strong> ${country.population}</p>
-            </div>
-
-            <div class="weather"></div>
-
-            <button onclick="showDetails(this)">More Details</button>
-            <button onclick="findWeather(this, '${country.capital}')">Find Weather</button>
+            <p><b>Capital:</b> ${country.capital ? country.capital[0] : 'N/A'}</p>
+            <p><b>Population:</b> ${country.population.toLocaleString()}</p>
+            <p><b>Region:</b> ${country.region}</p>
+            <button onclick="showWeather('${country.capital ? country.capital[0] : ''}', this)">More Details</button>
         `;
 
-        mainContent.appendChild(card);
+        main.appendChild(card);
     }
 }
 
-function showDetails(button) {
-    var card = button.parentElement;
-    var detailsDiv = card.querySelector(".details");
-
-    if (detailsDiv.style.display === "none" || detailsDiv.style.display === "") {
-        detailsDiv.style.display = "block";
-        button.textContent = "Hide Details";
-    } else {
-        detailsDiv.style.display = "none";
-        button.textContent = "More Details";
+function showWeather(cityName, btnElement) {
+    if (cityName === '') {
+        alert("No Capital City found to get weather!");
+        return;
     }
-}
 
-function findWeather(button, cityName) {
-    var weatherDiv = button.parentElement.querySelector(".weather");
+    var weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=45abb3b6bd3ccf9c8f774149d21bfb5d
+&units=metric`;
 
-    var weatherApiKey = "45abb3b6bd3ccf9c8f774149d21bfb5d"; 
-    
-    
-    // <-- PUT your OpenWeather key here
-    var url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${weatherApiKey}&units=metric`;
-
-    fetch(url)
-    .then(function(res) {
-        return res.json();
+    fetch(weatherUrl)
+    .then(function(response) {
+        return response.json();
     })
-    .then(function(data) {
-        weatherDiv.style.display = "block";
-        weatherDiv.innerHTML = `
-            <p><strong>Temperature:</strong> ${data.main.temp}°C</p>
-            <p><strong>Humidity:</strong> ${data.main.humidity}%</p>
-            <p><strong>Weather:</strong> ${data.weather[0].description}</p>
+    .then(function(weatherData) {
+        var weatherInfo = `
+            <p><b>Weather:</b> ${weatherData.weather[0].description}</p>
+            <p><b>Temperature:</b> ${weatherData.main.temp} °C</p>
+            <p><b>Humidity:</b> ${weatherData.main.humidity}%</p>
+            <p><b>Wind Speed:</b> ${weatherData.wind.speed} m/s</p>
         `;
+
+        var card = btnElement.parentElement;
+        var extraDiv = document.createElement("div");
+        extraDiv.innerHTML = weatherInfo;
+        extraDiv.style.marginTop = "10px";
+        extraDiv.style.animation = "fadeIn 0.5s ease"; // optional animation
+        card.appendChild(extraDiv);
+
+        btnElement.style.display = "none"; // hide button after showing weather
+    })
+    .catch(function(error) {
+        console.log("Error fetching weather:", error);
     });
 }
